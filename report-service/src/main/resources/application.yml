@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: report-service
+  kafka:
+    auto-offset-reset: latest
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: report-service
+      topic: create-report-request
+
+server:
+  port: 8081
