@@ -24,7 +24,7 @@ public class QuartzConfig {
     public Trigger simpleJobTrigger() {
         //TODO: will configure later
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(10)
+                .withIntervalInSeconds(120)
                 .repeatForever();
 
         return TriggerBuilder.newTrigger()

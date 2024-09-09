@@ -1,16 +1,13 @@
 spring:
   application:
-    name: report-service
+    name: notification-service
   kafka:
     auto-offset-reset: latest
     bootstrap-servers: localhost:9092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: report-service
+      group-id: notification-service
 
 server:
-  port: 8081
+  port: 8085

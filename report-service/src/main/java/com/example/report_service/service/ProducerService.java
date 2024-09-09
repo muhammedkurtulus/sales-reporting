@@ -1,4 +1,4 @@
-package com.example.scheduler_service.service;
+package com.example.report_service.service;
 
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;

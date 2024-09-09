@@ -19,6 +19,7 @@ public class CreateReportJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         logger.info("CreateReportJob is executing!");
-        producerService.sendMessage("This message is sent from scheduler-service");
+        producerService.sendMessage("create-report-request", "create-report-request");
+        logger.info("1-create-report-request");
     }
 }
