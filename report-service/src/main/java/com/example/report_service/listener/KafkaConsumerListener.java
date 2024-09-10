@@ -40,7 +40,7 @@ public class KafkaConsumerListener {
     public void listenAccessLinkResponse(String message) {
         final String consumeMessage = String.format("Received Message: [%s] ", message);
         logger.info(consumeMessage);
-        logger.info("14-Listen: sales-data-response");
+        logger.info("14-Listen: access-link-response");
         producerService.sendMessage("report-ready-request", "report-ready-request");
         logger.info("15-report-ready-request");
     }

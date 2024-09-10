@@ -1,11 +1,7 @@
 package com.example.scheduler_service.config;
 
 import com.example.scheduler_service.job.CreateReportJob;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,17 +16,35 @@ public class QuartzConfig {
                 .build();
     }
 
-    @Bean
-    public Trigger simpleJobTrigger() {
-        //TODO: will configure later
-        SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(120)
-                .repeatForever();
+    public Trigger createTrigger(String scheduleType, String dayOfWeek, int hour, int minute) {
+        Trigger trigger = null;
+        if ("daily".equalsIgnoreCase(scheduleType)) {
+            trigger = TriggerBuilder.newTrigger()
+                    .forJob(createReportJobDetail())
+                    .withIdentity("createReportDailyTrigger")
+                    .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(hour, minute))
+                    .build();
+        } else if ("weekly".equalsIgnoreCase(scheduleType) && dayOfWeek != null) {
+            trigger = TriggerBuilder.newTrigger()
+                    .forJob(createReportJobDetail())
+                    .withIdentity("createReportWeeklyTrigger")
+                    .withSchedule(CronScheduleBuilder.weeklyOnDayAndHourAndMinute(
+                            getDayOfWeek(dayOfWeek), hour, minute))
+                    .build();
+        }
+        return trigger;
+    }
 
-        return TriggerBuilder.newTrigger()
-                .forJob(createReportJobDetail())
-                .withIdentity("createReportJobTrigger")
-                .withSchedule(scheduleBuilder)
-                .build();
+    private int getDayOfWeek(String day) {
+        return switch (day.toUpperCase()) {
+            case "SUN" -> DateBuilder.SUNDAY;
+            case "MON" -> DateBuilder.MONDAY;
+            case "TUE" -> DateBuilder.TUESDAY;
+            case "WED" -> DateBuilder.WEDNESDAY;
+            case "THU" -> DateBuilder.THURSDAY;
+            case "FRI" -> DateBuilder.FRIDAY;
+            case "SAT" -> DateBuilder.SATURDAY;
+            default -> throw new IllegalArgumentException("Invalid day: " + day);
+        };
     }
 }
