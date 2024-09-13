@@ -8,3 +8,9 @@ Services include:
 - File Storage Service: Saves reports to object storage and generates access links.
 - Notification Service: Sends report completion notifications.
 - Sales Service: Retrieves and provides the necessary sales data.
+
+Run Apache Kafka using Docker: <br/>
+
+```
+docker run -d -p 9092:9092 --name broker apache/kafka:latest
+```
