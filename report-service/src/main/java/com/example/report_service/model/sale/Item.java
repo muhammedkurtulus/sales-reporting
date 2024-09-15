@@ -1,4 +1,4 @@
-package com.example.sales_service.model;
+package com.example.report_service.model.sale;
 
 import java.math.BigDecimal;
 import java.util.List;

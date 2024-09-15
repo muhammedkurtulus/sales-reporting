@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,9 +26,15 @@ public class SalesService {
         this.producerService = producerService;
     }
 
+    public List<Sale> getRecentSales(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return saleRepository.findAllByOrderBySaleDateDesc(pageable);
+    }
+
     public List<Sale> fetchSalesData() {
         try {
-            List<Sale> sales = saleRepository.findAll();
+            List<Sale> sales = getRecentSales(10);
+
             logger.info(sales.getFirst().toString());
             logger.info("5-Get Sales Data");
             return sales;
@@ -43,7 +51,7 @@ public class SalesService {
             String salesJson = objectMapper.writeValueAsString(sales);
 
             producerService.sendMessage("sales-data-response", salesJson);
-            logger.info("6-sales-data-response: {}", salesJson.length());
+            logger.info("6-sales-data-response: {}", salesJson);
         } catch (Exception e) {
             logger.error("Error while return sales data", e);
         }

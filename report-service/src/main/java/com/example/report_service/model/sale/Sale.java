@@ -1,12 +1,10 @@
-package com.example.sales_service.model;
+package com.example.report_service.model.sale;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "sales")
 public class Sale {
 
     @Id

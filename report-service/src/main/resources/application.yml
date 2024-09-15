@@ -11,6 +11,10 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: report-service
+  data:
+    mongodb:
+      uri: ${MONGO_DB_URL}
+      database: ${MONGO_DB_NAME}
 
 server:
   port: 8081
