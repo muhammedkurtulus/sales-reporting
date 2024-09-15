@@ -1,5 +1,6 @@
 package com.example.report_service.listener;
 
+import com.example.report_service.service.CreateReportService;
 import com.example.report_service.service.ProducerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +12,11 @@ public class KafkaConsumerListener {
 
     final Logger logger = LoggerFactory.getLogger(getClass());
     private final ProducerService producerService;
-    public KafkaConsumerListener(ProducerService producerService) {
+    private final CreateReportService createReportService;
+
+    public KafkaConsumerListener(ProducerService producerService, CreateReportService createReportService) {
         this.producerService = producerService;
+        this.createReportService = createReportService;
     }
 
     @KafkaListener(topics = "create-report-request", groupId = "${spring.kafka.consumer.group-id}")
@@ -29,11 +33,8 @@ public class KafkaConsumerListener {
         final String consumeMessage = String.format("Received Message: [%s] ", message);
         logger.info(consumeMessage);
         logger.info("7-Listen: sales-data-response");
-        //TODO: Get report template from db and create report
-        logger.info("8-Get Report Template");
-        logger.info("9-Create Report");
-        producerService.sendMessage("save-report-request", "save-report-request");
-        logger.info("10-save-report-request");
+
+        createReportService.createReport(message);
     }
 
     @KafkaListener(topics = "access-link-response", groupId = "${spring.kafka.consumer.group-id}")
