@@ -21,6 +21,6 @@ public class KafkaConsumerListener {
         logger.info(consumeMessage);
         logger.info("4-Listen: sales-data-request");
 
-        salesService.returnSalesData();
+        salesService.setSalesData();
     }
 }
