@@ -12,6 +12,13 @@ spring:
     mongodb:
       uri: ${MONGO_DB_URL}
       database: ${MONGO_DB_NAME}
+  aws:
+    s3:
+      bucket-name: sr-test-sales
+      region: us-east-1
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
 
 server:
   port: 8083

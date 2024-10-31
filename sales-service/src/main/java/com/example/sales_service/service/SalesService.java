@@ -1,5 +1,6 @@
 package com.example.sales_service.service;
 
+import com.example.sales_service.model.S3FileMetadata;
 import com.example.sales_service.model.Sale;
 import com.example.sales_service.repository.SaleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,25 +18,25 @@ public class SalesService {
 
     private static final Logger logger = LoggerFactory.getLogger(SalesService.class);
 
-    private final ProducerService producerService;
+    private final S3Service s3Service;
 
     @Autowired
     private SaleRepository saleRepository;
 
-    public SalesService(ProducerService producerService) {
-        this.producerService = producerService;
+    public SalesService(ProducerService producerService, S3Service s3Service, ObjectMapper objectMapper) {
+
+        this.s3Service = s3Service;
     }
 
-    public List<Sale> getRecentSales(int limit) {
-        Pageable pageable = PageRequest.of(0, limit);
+    public List<Sale> getRecentSales(int pageNumber, int limit) {
+        Pageable pageable = PageRequest.of(pageNumber, limit);
         return saleRepository.findAllByOrderBySaleDateDesc(pageable);
     }
 
     public List<Sale> fetchSalesData() {
         try {
-            List<Sale> sales = getRecentSales(10);
+            List<Sale> sales = getRecentSales(0, 10);
 
-            logger.info(sales.getFirst().toString());
             logger.info("5-Get Sales Data");
             return sales;
         } catch (Exception e) {
@@ -44,16 +45,16 @@ public class SalesService {
         }
     }
 
-    public void returnSalesData() {
+    public void setSalesData() {
         List<Sale> sales = fetchSalesData();
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String salesJson = objectMapper.writeValueAsString(sales);
+            S3FileMetadata metadata = s3Service.uploadObject(sales, "sales.json");
 
-            producerService.sendMessage("sales-data-response", salesJson);
-            logger.info("6-sales-data-response: {}", salesJson);
+            logger.info("6-set-sales-data: {}", metadata);
+
+            logger.info("7-sales-data-response: {}", "");
         } catch (Exception e) {
-            logger.error("Error while return sales data", e);
+            logger.error("Error while set sales data", e);
         }
     }
 }
