@@ -10,6 +10,8 @@ Services include:
 - Notification Service: Sends report completion notifications.
 - Sales Service: Retrieves and provides the necessary sales data.
 
+![alt text](https://github.com/muhammedkurtulus/sales-reporting/blob/main/architecture.png?raw=true)
+
 Run Apache Kafka using Docker: <br/>
 
 ```
