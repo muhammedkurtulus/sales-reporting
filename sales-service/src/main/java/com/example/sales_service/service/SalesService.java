@@ -23,6 +23,9 @@ public class SalesService {
     @Autowired
     private SaleRepository saleRepository;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     public SalesService(ProducerService producerService, S3Service s3Service, ObjectMapper objectMapper) {
 
         this.s3Service = s3Service;
@@ -45,16 +48,22 @@ public class SalesService {
         }
     }
 
-    public void setSalesData() {
+    public S3FileMetadata setSalesData() {
         List<Sale> sales = fetchSalesData();
         try {
-            S3FileMetadata metadata = s3Service.uploadObject(sales, "sales.json");
+            byte[] salesData = objectMapper.writeValueAsBytes(sales);
+
+            String key = "sales.json";
+            String contentType = "application/json";
+
+            S3FileMetadata metadata = s3Service.uploadObject(salesData, key, contentType);
 
             logger.info("6-set-sales-data: {}", metadata);
 
-            logger.info("7-sales-data-response: {}", "");
+            return metadata;
         } catch (Exception e) {
             logger.error("Error while set sales data", e);
         }
+        return null;
     }
 }

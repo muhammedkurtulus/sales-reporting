@@ -1,4 +1,4 @@
-package com.example.sales_service.model;
+package com.example.report_service.model;
 
 public class S3FileMetadata {
     private final String key;

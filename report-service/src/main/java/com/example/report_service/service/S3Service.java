@@ -1,6 +1,6 @@
-package com.example.sales_service.service;
+package com.example.report_service.service;
 
-import com.example.sales_service.model.S3FileMetadata;
+import com.example.report_service.model.S3FileMetadata;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

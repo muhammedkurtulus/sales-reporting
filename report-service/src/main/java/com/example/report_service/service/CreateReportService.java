@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +27,7 @@ public class CreateReportService {
         this.objectMapper = objectMapper;
     }
 
-    public void createReport(String message) {
+    public byte[] createReport(String message) {
         String templateName = "excel";
 
         try {
@@ -39,19 +38,14 @@ public class CreateReportService {
             Optional<Template> template = templateService.getTemplateByName(templateName);
             logger.info("Template: {}", template.toString());
 
-            logger.info("8-Get Report Template");
+            logger.info("10-Get Report Template");
 
             logger.info("sales data {}", sales.getFirst().toString());
 
-            byte[] byteArray = excelReportService.generateReport(template, sales);
-
-            logger.info("9-Create Report");
-
-            producerService.sendMessage("save-report-request", Arrays.toString(byteArray));
-
-            logger.info("10-save-report-request");
+            return excelReportService.generateReport(template, sales);
         } catch (IOException e) {
             logger.error("Error processing report generation", e);
         }
+        return new byte[0];
     }
 }

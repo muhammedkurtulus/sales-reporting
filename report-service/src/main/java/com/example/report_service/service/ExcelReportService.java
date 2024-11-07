@@ -66,9 +66,10 @@ public class ExcelReportService {
             baos.flush();
             byte[] byteArray = baos.toByteArray();
 
-            //TODO: this is for testing purposes only
-            saveByteArrayToFile(byteArray, "SalesReport.xlsx");
-
+//            // this is for testing purposes only
+//            saveByteArrayToFile(byteArray, "SalesReport.xlsx");
+            logger.info("11-Create Report");
+            
             return byteArray;
         }
     }
@@ -96,7 +97,7 @@ public class ExcelReportService {
         return rows;
     }
 
-    //TODO: this is for testing purposes only
+    //this is for testing purposes only
     private void saveByteArrayToFile(byte[] byteArray, String fileName) throws IOException {
         File file = new File(fileName);
         try (FileOutputStream fos = new FileOutputStream(file)) {
