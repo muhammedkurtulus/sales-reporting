@@ -27,7 +27,6 @@ public class SalesService {
     private ObjectMapper objectMapper;
 
     public SalesService(ProducerService producerService, S3Service s3Service, ObjectMapper objectMapper) {
-
         this.s3Service = s3Service;
     }
 

@@ -48,16 +48,10 @@ public class KafkaConsumerListener {
 
         logger.info("8-Listen: sales-data-response");
 
-        String fileContent = null;
-        try {
+        String fileContent = s3Service.downloadObject(metadata.getKey());
+        logger.info("Downloaded Content: {}", fileContent);
 
-            fileContent = s3Service.downloadObject(metadata.getKey());
-            logger.info("Downloaded Content: {}", fileContent);
-
-            logger.info("9-Get Sales Data");
-        } catch (IOException e) {
-            logger.error("Error downloading S3 object", e);
-        }
+        logger.info("9-Get Sales Data");
 
         byte[] byteArrayReport = createReportService.createReport(fileContent);
 

@@ -8,6 +8,13 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: notification-service
+  aws:
+    s3:
+      bucket-name: sr-test-sales
+      region: us-east-1
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
 
 server:
   port: 8085
